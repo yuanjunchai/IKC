@@ -1,7 +1,7 @@
 ## IKC
 
 Here is the code of ['Blind Super-Resolution With Iterative Kernel Correction'](https://www.jasongt.com/projectpages/IKC.html).<br/>
-Based on [[BasicSR]](https://github.com/xinntao/BasicSR).
+Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://github.com/open-mmlab/mmsr).
 
 ### Dataset Preparation
 use script to produce LR dataset and corresponding kernel map
