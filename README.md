@@ -10,6 +10,15 @@ use script to produce LR dataset and corresponding kernel map
 
 ### Test
 
+## Dependencies and Installation
+- Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
+- [PyTorch >= 1.0](https://pytorch.org/)
+- NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
+- Python packages: `pip install numpy opencv-python lmdb pyyaml`
+- TensorBoard: 
+  - PyTorch >= 1.1: `pip install tb-nightly future`
+  - PyTorch == 1.0: `pip install tensorboardX`
+
 ## Contributing
 
 ## Citation
