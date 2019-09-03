@@ -13,7 +13,7 @@ use script to produce LR dataset and corresponding kernel map
 ## Contributing
 
 ## Citation
-    @InProceedings{gu2019ikc,
+    @InProceedings{gu2019blind,
         author = {Gu, Jinjin and Lu, Hannan and Zuo, Wangmeng and Dong, Chao},
         title = {Blind super-resolution with iterative kernel correction},
         booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
