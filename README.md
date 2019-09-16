@@ -1,9 +1,10 @@
 ## IKC: Blind Super-Resolution With Iterative Kernel Correction
 [ArXiv](https://arxiv.org/abs/1904.03377) | [BibTex](#citation)
 
-Here is the reimplementation of ['Blind Super-Resolution With Iterative Kernel Correction'](https://www.jasongt.com/projectpages/IKC.html).<br/>
+Here is the implementation of ['Blind Super-Resolution With Iterative Kernel Correction'](https://www.jasongt.com/projectpages/IKC.html).<br/>
 Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://github.com/open-mmlab/mmsr).
 About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/master/codes).
+Thanks to [JasonGUTU](https://github.com/JasonGUTU) and [xinntao](https://github.com/xinntao/)
 
 ## Dependencies
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
