@@ -1,0 +1,100 @@
+# Not exactly the same as SRResNet in <Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network>
+# With 16 Residual blocks w/o BN
+
+#### general settings
+name: 001_Corrector_x4_demo_DIV2K
+use_tb_logger: true
+model: corrector
+distortion: sr
+scale: 4
+gpu_ids: [4, 5, 6]
+step: 7
+kernel_size: 21
+code_len: 10
+
+#### datasets
+datasets:
+  train:
+    name: DIV2K
+    mode: LQGTker
+    dataroot_GT: /mnt/yjchai/SR_data/Flickr2K_train/HR/x4
+    dataroot_LQ: /mnt/yjchai/SR_data/Flickr2K_train/LR/x4
+
+    use_shuffle: true
+    n_workers: 8  # per GPU
+    batch_size: 32
+    GT_size: 256
+    LR_size: 64
+    use_flip: true
+    use_rot: true
+    color: RGB
+  val:
+    name: DIV2K
+    mode: LQGTker
+    dataroot_GT: /mnt/yjchai/SR_data/DIV2K_test/HR/x4
+    dataroot_LQ: /mnt/yjchai/SR_data/DIV2K_test/HR/x4
+
+#### network structures
+network_G:
+  which_model_G: Corrector
+  in_nc: 3
+  out_nc: 3
+  nf: 64
+  nb: 16
+  upscale: 4
+
+#### path
+path:
+  pretrain_model_G: ~
+  strict_load: true
+  resume_state: ~
+
+#### training settings: learning rate scheme, loss
+train:
+  lr_G: !!float 1e-4
+  lr_scheme: ~
+  beta1: 0.9
+  beta2: 0.99
+  niter: 5000
+  warmup_iter: -1  # no warm up
+  T_period: ~ #[250000, 250000, 250000, 250000]
+  restarts: ~ #[250000, 500000, 750000]
+  restart_weights: ~ #[1, 1, 1]
+  eta_min: !!float 1e-7
+
+  pixel_criterion: l2
+  pixel_weight: 1.0
+
+  manual_seed: 0
+  val_freq: 5000 #!!float 5e3
+
+#### logger
+logger:
+  print_freq: 10
+  save_checkpoint_freq: 100
+
+corrector:
+  gpu_ids: [7]
+  is_train: False
+  datasets:
+    test:
+      name: div2k100
+      mode: LQ
+      phase: test
+      dataroot_GT: ~ #/mnt/yjchai/SR_data/DIV2K_test_HR
+      dataroot_LQ: /mnt/yjchai/SR_data/DIV2K_blur/x4_bicubic #/mnt/yjchai/SR_data/DIV2K_test_LR/x4_bicubic
+      GT_size: 256
+      LR_size: 64
+      data_type: img
+      model_path: /media/sdc/yjchai/IKC/experiments/001_Predictor_x4_scratch_DIV2K/models/latest_G.pth
+
+  model: predictor
+
+  network_G:
+    which_model_G: Predictor
+
+  path:
+    results_root: /media/sdc/yjchai/IKC/results
+    pretrain_model_G: /media/sdc/yjchai/IKC/experiments/001_Predictor_x4_scratch_DIV2K/models/latest_G.pth
+    strict_load: True
+
