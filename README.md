@@ -27,8 +27,9 @@ pip install -r requirements.txt
 ```
 
 ## Dataset Preparation
-We use [DIV2K](https://data.vision.ee.ethz.ch/cvl/DIV2K/), [Flickr2K](http://cv.snu.ac.kr/research/EDSR/Flickr2K.tar), [Set5](https://uofi.box.com/shared/static/kfahv87nfe8ax910l85dksyl2q212voc.zip), [Set14](https://uofi.box.com/shared/static/igsnfieh4lz68l926l8xbklwsnnk8we9.zip), [Urban100](https://uofi.box.com/shared/static/65upg43jjd0a4cwsiqgl6o6ixube6klm.zip), [BSD100](https://uofi.box.com/shared/static/qgctsplb8txrksm9to9x01zfa4m61ngq.zip) datasets. To train a model on the full dataset(DIV2K+Flickr2K, totally 3450 images), download datasets from official websites. 
-After downloading, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/generate_mod_LR_bic.py) to generate LR/HR/Bicubic of train, test and validation datasets paths. 
+We use [DIV2K](https://data.vision.ee.ethz.ch/cvl/DIV2K/), [Flickr2K](http://cv.snu.ac.kr/research/EDSR/Flickr2K.tar), [Set5](https://uofi.box.com/shared/static/kfahv87nfe8ax910l85dksyl2q212voc.zip), [Set14](https://uofi.box.com/shared/static/igsnfieh4lz68l926l8xbklwsnnk8we9.zip), [Urban100](https://uofi.box.com/shared/static/65upg43jjd0a4cwsiqgl6o6ixube6klm.zip), [BSD100](https://uofi.box.com/shared/static/qgctsplb8txrksm9to9x01zfa4m61ngq.zip) datasets. 
+To train a model on the full dataset(DIV2K+Flickr2K, totally 3450 images), download datasets from official websites. 
+After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/generate_mod_LR_bic.py) to generate LR/HR/Bicubic of train, test and validation datasets paths. 
 ```bash
 python codes/scripts/generate_mod_LR_bic.py
 ```
@@ -42,12 +43,22 @@ To train the SFTMD model, change image path of [`codes/options/train/train_SFTMD
 ```bash
 python codes/train_SFTMD.py -opt_F codes/options/train/train_SFTMD.yml
 ```
-To train Predictor and Corrector models, you first should change opt_F['sftmd']['path']['pretrain_model_G']
+
+To train Predictor and Corrector models, you first should change opt_F['sftmd']['path']['pretrain_model_G'] to the path of pretrained SFTMD checkpoint. Also, dataroot_GT, dataroot_LQ of opt_P, opt_C should be filled with corresponding train&validation data paths.
+```bash
+python codes/train_IKC.py -opt_F codes/options/train/train_SFTMD.yml -opt_P codes/options/train/train_Predictor.yml -opt_C codes/options/train/train_Corrector.yml
+```
 
 ### Test
+To test SFTMD model, change test datasets paths of [`codes/options/test/test_SFTMD.yml`](codes/options/test/test_SFTMD.yml).
+```bash
+python codes/test_SFTMD.py -opt_F codes/options/test/test_SFTMD.yml
+```
 
-
-## Contributing
+To test Predictor and Corrector models, change datasets paths of [`codes/options/test/test_Predictor.yml`](codes/options/test/test_Predictor.yml) and [`codes/options/test/test_Corrector.yml`](codes/options/test/test_Corrector.yml)
+```bash
+python codes/test_IKC.py -opt_F codes/options/test/test_SFTMD.yml -opt_P codes/options/test/test_Predictor.yml -opt_C codes/options/test/test_Corrector.yml
+```
 
 ## Citation
     @InProceedings{gu2019blind,
