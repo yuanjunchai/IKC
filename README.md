@@ -7,12 +7,12 @@ About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/mast
 Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
 
 <p align="center">
-  <img height="330" src="./data_samples/pipeline.png">
+  <img height="330" src="./data_samples/samples/pipeline.png">
 </p>
 
 ### Kernel mismatch
 <p align="center">
-  <img height="240" src="./data_samples/kernel.png">
+  <img height="240" src="./data_samples/samples/kernel.png">
 </p>
 
 
