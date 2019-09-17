@@ -4,7 +4,7 @@
 Here is the implementation of ['Blind Super-Resolution With Iterative Kernel Correction'](https://www.jasongt.com/projectpages/IKC.html).<br/>
 Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://github.com/open-mmlab/mmsr).
 About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/master/codes).<br/>
-Thanks to [JasonGUTU](https://github.com/JasonGUTU) and [xinntao](https://github.com/xinntao/).
+Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
 
 ## Dependencies
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
