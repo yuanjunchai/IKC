@@ -8,12 +8,12 @@ Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://gi
 
 ### Architecture
 <p align="center">
-  <img height="330" src="./data_samples/samples/pipeline.jpg">
+  <img height="300" src="./data_samples/samples/pipeline.jpg">
 </p>
 
 ### Kernel mismatch
 <p align="center">
-  <img height="330" src="./data_samples/samples/kernel.jpg">
+  <img height="360" src="./data_samples/samples/kernel.jpg">
 </p>
 
 ## Dependencies
