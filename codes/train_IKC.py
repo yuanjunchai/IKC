@@ -302,22 +302,22 @@ def main():
                         cropped_gt_img = gt_img[crop_size:-crop_size, crop_size:-crop_size, :]
                         step_psnr = util.calculate_psnr(cropped_sr_img * 255, cropped_gt_img * 255)
                         logger.info(
-                            '<epoch:{:3d}, iter:{:8,d}, step:{:3d}> img:{:s}, psnr: {:.4f}'.format(epoch, current_step, step,
+                            '<epoch:{:3d}, iter:{:8,d}, step:{:3d}> img:{:s}, psnr: {:.6f}'.format(epoch, current_step, step,
                                                                                         img_name, step_psnr))
                         single_img_psnr += step_psnr
                         avg_psnr += util.calculate_psnr(cropped_sr_img * 255, cropped_gt_img * 255)
 
                     avg_signle_img_psnr = single_img_psnr / step
                     logger.info(
-                        '<epoch:{:3d}, iter:{:8,d}, step:{:3d}> img:{:s}, average psnr: {:.4f}'.format(epoch, current_step, step,
+                        '<epoch:{:3d}, iter:{:8,d}, step:{:3d}> img:{:s}, average psnr: {:.6f}'.format(epoch, current_step, step,
                                                                                     img_name, avg_signle_img_psnr))
 
                 avg_psnr = avg_psnr / idx
 
                 # log
-                logger.info('# Validation # PSNR: {:.4f}'.format(avg_psnr))
+                logger.info('# Validation # PSNR: {:.6f}'.format(avg_psnr))
                 logger_val = logging.getLogger('val')  # validation logger
-                logger_val.info('<epoch:{:3d}, iter:{:8,d}, step:{:3d}> psnr: {:.4f}'.format(epoch, current_step, step, avg_psnr))
+                logger_val.info('<epoch:{:3d}, iter:{:8,d}, step:{:3d}> psnr: {:.6f}'.format(epoch, current_step, step, avg_psnr))
                 # tensorboard logger
                 if opt_P['use_tb_logger'] and 'debug' not in opt_P['name']:
                     tb_logger.add_scalar('psnr', avg_psnr, current_step)
