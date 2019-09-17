@@ -50,23 +50,23 @@ TODO: Download the pre-trained models using the following links and copy them un
 ### Train
 First, train SFTMD network, and then use pretrained SFTMD to train Predictor and Corrector networks iteratively.
 
-To train the SFTMD model, change image path of [`codes/options/train/train_SFTMD.yml`](codes/options/train/train_SFTMD.yml), especially dataroot_GT, dataroot_LQ. You could change opt['name'] to save different checkpoint filenames, and change opt['gpu_ids'] to assign specific GPU.
+1. To train the SFTMD model, change image path of [`codes/options/train/train_SFTMD.yml`](codes/options/train/train_SFTMD.yml), especially dataroot_GT, dataroot_LQ. You could change opt['name'] to save different checkpoint filenames, and change opt['gpu_ids'] to assign specific GPU.
 ```bash
 python codes/train_SFTMD.py -opt_F codes/options/train/train_SFTMD.yml
 ```
 
-To train Predictor and Corrector models, you first should change opt_F['sftmd']['path']['pretrain_model_G'] to the path of pretrained SFTMD checkpoint. Also, dataroot_GT, dataroot_LQ of opt_P, opt_C should be filled with corresponding train&validation data paths.
+2. To train Predictor and Corrector models, you first should change opt_F['sftmd']['path']['pretrain_model_G'] to the path of pretrained SFTMD checkpoint. Also, dataroot_GT, dataroot_LQ of opt_P, opt_C should be filled with corresponding train&validation data paths.
 ```bash
 python codes/train_IKC.py -opt_F codes/options/train/train_SFTMD.yml -opt_P codes/options/train/train_Predictor.yml -opt_C codes/options/train/train_Corrector.yml
 ```
 
 ### Test
-To test SFTMD model, change test datasets paths of [`codes/options/test/test_SFTMD.yml`](codes/options/test/test_SFTMD.yml).
+1. To test SFTMD model, change test datasets paths of [`codes/options/test/test_SFTMD.yml`](codes/options/test/test_SFTMD.yml).
 ```bash
 python codes/test_SFTMD.py -opt_F codes/options/test/test_SFTMD.yml
 ```
 
-To test Predictor and Corrector models, change datasets paths of [`codes/options/test/test_Predictor.yml`](codes/options/test/test_Predictor.yml) and [`codes/options/test/test_Corrector.yml`](codes/options/test/test_Corrector.yml)
+2. To test Predictor and Corrector models, change datasets paths of [`codes/options/test/test_Predictor.yml`](codes/options/test/test_Predictor.yml) and [`codes/options/test/test_Corrector.yml`](codes/options/test/test_Corrector.yml)
 ```bash
 python codes/test_IKC.py -opt_F codes/options/test/test_SFTMD.yml -opt_P codes/options/test/test_Predictor.yml -opt_C codes/options/test/test_Corrector.yml
 ```
