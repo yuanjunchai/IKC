@@ -6,15 +6,15 @@ Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://githu
 About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/master/codes).<br/>
 Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
 
+### Architecture
 <p align="center">
   <img height="330" src="./data_samples/samples/pipeline.jpg">
 </p>
 
 ### Kernel mismatch
 <p align="center">
-  <img height="240" src="./data_samples/samples/kernel.jpg">
+  <img height="330" src="./data_samples/samples/kernel.jpg">
 </p>
-
 
 ## Dependencies
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
