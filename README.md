@@ -1,5 +1,5 @@
 ## IKC: Blind Super-Resolution With Iterative Kernel Correction
-[ArXiv](https://arxiv.org/abs/1904.03377) | [BibTex](#citation) | [Project Website](https://www.jasongt.com/projectpages/IKC.html)
+### [ArXiv](https://arxiv.org/abs/1904.03377) |### [BibTex](#citation) |### [Project Website](https://www.jasongt.com/projectpages/IKC.html)
 
 Here is the implementation of ['Blind Super-Resolution With Iterative Kernel Correction'](https://www.jasongt.com/projectpages/IKC.html).<br/>
 Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://github.com/open-mmlab/mmsr).
