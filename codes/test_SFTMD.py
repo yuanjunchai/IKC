@@ -25,12 +25,9 @@ util.setup_logger('base', opt_F['path']['log'], 'test_' + opt_F['name'], level=l
 logger = logging.getLogger('base')
 logger.info(option.dict2str(opt_F))
 
-# create PCA matrix of enough kernel
-batch_ker = util.random_batch_kernel(batch=30000, l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, tensor=False)
-print('batch kernel shape: {}'.format(batch_ker.shape))
-b = np.size(batch_ker, 0)
-batch_ker = batch_ker.reshape((b, -1))
-pca_matrix = util.PCA(batch_ker, k=10).float()
+# load PCA matrix of enough kernel
+print('load PCA matrix')
+pca_matrix = torch.load('./pca_matrix.pth',map_location=lambda storage, loc: storage)
 print('PCA matrix shape: {}'.format(pca_matrix.shape))
 
 #### Create test dataset and dataloader
