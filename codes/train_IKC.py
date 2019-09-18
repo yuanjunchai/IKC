@@ -335,3 +335,7 @@ def main():
         model_C.save('latest')
         logger.info('End of Predictor and Corrector training.')
     tb_logger.close()
+
+
+if __name__ == '__main__':
+    main()
