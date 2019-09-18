@@ -249,3 +249,7 @@ def main():
         logger.info('Saving the final model.')
         model_F.save('latest')
         logger.info('End of SFTMD training.')
+        
+
+if __name__ == '__main__':
+    main()
