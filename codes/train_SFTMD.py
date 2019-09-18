@@ -46,13 +46,15 @@ def main():
         seed = random.randint(1, 10000)
     util.set_random_seed(seed)
 
-    # create PCA matrix of enough kernel
+    # create PCA matrix of enough kernel and save it, to ensure all kernel have same corresponding kernel maps
     batch_ker = util.random_batch_kernel(batch=30000, l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, tensor=False)
     print('batch kernel shape: {}'.format(batch_ker.shape))
     b = np.size(batch_ker, 0)
     batch_ker = batch_ker.reshape((b, -1))
     pca_matrix = util.PCA(batch_ker, k=10).float()
     print('PCA matrix shape: {}'.format(pca_matrix.shape))
+    torch.save(pca_matrix, './pca_matrix.pth')
+    print('Save PCA matrix at: ./pca_matrix.pth')
 
     #### distributed training settings
     if args.launcher == 'none':  # disabled distributed training
@@ -107,6 +109,7 @@ def main():
         util.setup_logger('base', opt_F['path']['log'], 'train', level=logging.INFO, screen=True)
         logger = logging.getLogger('base')
 
+        
     #### create train and val dataloader
     dataset_ratio = 200   # enlarge the size of each epoch
     for phase, dataset_opt in opt_F['datasets'].items():
