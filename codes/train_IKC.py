@@ -258,12 +258,21 @@ def main():
                                                     rate_cln=0.2, noise_high=0.0)
                     LR_img, ker_map = prepro(val_data['GT'])
                     single_img_psnr = 0.0
+                    lr_img = util.tensor2img(LR_img) #save LR image for reference
 
                     # valid Predictor
                     model_P.feed_data(LR_img, ker_map)
                     model_P.test()
                     P_visuals = model_P.get_current_visuals()
                     est_ker_map = P_visuals['Batch_est_ker_map']
+                    
+                    # Save images for reference
+                    img_name = os.path.splitext(os.path.basename(val_data['LQ_path'][0]))[0]
+                    img_dir = os.path.join(opt_P['path']['val_images'], img_name)
+                    # img_dir = os.path.join(opt_F['path']['val_images'], str(current_step), '_', str(step))
+                    util.mkdir(img_dir)
+                    save_lr_path = os.path.join(img_dir, '{:s}_LR.png'.format(img_name))
+                    util.save_img(lr_img, save_lr_path)
 
                     for step in range(opt_C['step']):
                         step += 1
@@ -281,12 +290,6 @@ def main():
 
                         sr_img = util.tensor2img(F_visuals['SR'])  # uint8
                         gt_img = util.tensor2img(F_visuals['GT'])  # uint8
-
-                        # Save SR images for reference
-                        img_name = os.path.splitext(os.path.basename(val_data['LQ_path'][0]))[0]
-                        img_dir = os.path.join(opt_P['path']['val_images'], img_name)
-                        # img_dir = os.path.join(opt_F['path']['val_images'], str(current_step), '_', str(step))
-                        util.mkdir(img_dir)
 
                         save_img_path = os.path.join(img_dir, '{:s}_{:d}_{:d}.png'.format(img_name, current_step, step))
                         util.save_img(sr_img, save_img_path)
