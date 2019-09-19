@@ -45,9 +45,6 @@ def main():
     opt_C = option.dict_to_nonedict(opt_C)
     opt_F = option.dict_to_nonedict(opt_F)
 
-    # choose small opt for SFTMD test
-    opt_F = opt_F['sftmd']
-
     #### random seed
     seed = opt_P['train']['manual_seed']
     if seed is None:
@@ -82,6 +79,9 @@ def main():
 
     ###### SFTMD train ######
     SFTMD_train(opt_F, rank, world_size, pca_matrix)
+   
+    # choose small opt for SFTMD test
+    opt_F = opt_F['sftmd']
 
     ###### Predictor&Corrector train ######
     IKC_train(opt_P, opt_C, opt_F, rank, world_size, pca_matrix)
