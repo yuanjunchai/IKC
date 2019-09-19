@@ -47,6 +47,13 @@ def main():
 
     # choose small opt for SFTMD test, fill path of pre-trained model_F
     opt_F = opt_F['sftmd']
+    
+   
+    #### set random seed
+    seed = opt_P['train']['manual_seed']
+    if seed is None:
+        seed = random.randint(1, 10000)
+    util.set_random_seed(seed)
 
     # load PCA matrix of enough kernel
     print('load PCA matrix')
@@ -119,13 +126,6 @@ def main():
         util.setup_logger('base', opt_P['path']['log'], 'train', level=logging.INFO, screen=True)
         logger = logging.getLogger('base')
 
-    #### random seed
-    seed = opt_P['train']['manual_seed']
-    if seed is None:
-        seed = random.randint(1, 10000)
-    if rank <= 0:
-        logger.info('Random seed: {}'.format(seed))
-    util.set_random_seed(seed)
 
     torch.backends.cudnn.benchmark = True
     # torch.backends.cudnn.deterministic = True
