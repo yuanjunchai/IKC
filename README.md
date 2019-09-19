@@ -45,8 +45,8 @@ After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/gener
 python codes/scripts/generate_mod_LR_bic.py
 ```
 ## Getting Started
-Download the pre-trained models from `./checkpoints` directory.<br/>
-Remember: change opt['path']['pretrain_model_G'] of the .yaml to the path of models you saved.
+You could download the pre-trained models from `./checkpoints` directory.<br/>
+Remember: change opt['path']['pretrain_model_G'] of the .yaml to the models' path you saved.
 
 ### Train
 First, train SFTMD network, and then use pretrained SFTMD to train Predictor and Corrector networks iteratively.
