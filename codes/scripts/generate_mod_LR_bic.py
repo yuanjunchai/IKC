@@ -92,7 +92,7 @@ def generate_mod_LR_bic():
         kernel_list.append(blur_ker)
 
 
-    print("Image Blurring & Down smaple Done: X"+str(up_scale))
+    print("Down smaple Done: X"+str(up_scale))
 
 if __name__ == "__main__":
     generate_mod_LR_bic()
