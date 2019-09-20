@@ -29,7 +29,7 @@ util.mkdirs((path for key, path in opt_P['path'].items() if not key == 'experime
              and 'pretrain_model' not in key and 'resume' not in key))
 util.mkdirs((path for key, path in opt_C['path'].items() if not key == 'experiments_root'
              and 'pretrain_model' not in key and 'resume' not in key))
-util.setup_logger('base', opt_F['path']['log'], 'test_' + opt_P['name'], level=logging.INFO,
+util.setup_logger('base', opt_P['path']['log'], 'test_' + opt_P['name'], level=logging.INFO,
                   screen=True, tofile=True)
 logger = logging.getLogger('base')
 logger.info(option.dict2str(opt_P))
@@ -102,7 +102,7 @@ for test_loader in test_loaders:
             sr_img = util.tensor2img(F_visuals['SR'])  # uint8
 
             # save images
-            suffix = opt_F['suffix']
+            suffix = opt_P['suffix']
             if suffix:
                 save_img_path = os.path.join(dataset_dir, str(step), img_name + suffix + '.png')
             else:
@@ -115,7 +115,7 @@ for test_loader in test_loaders:
                 gt_img = gt_img / 255.
                 sr_img = sr_img / 255.
 
-                crop_border = opt_F['crop_border'] if opt_F['crop_border'] else opt_F['scale']
+                crop_border = opt_P['crop_border'] if opt_P['crop_border'] else opt_P['scale']
                 if crop_border == 0:
                     cropped_sr_img = sr_img
                     cropped_gt_img = gt_img
