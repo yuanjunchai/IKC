@@ -19,10 +19,10 @@ parser.add_argument('-opt_C', type=str, required=True, help='Path to options YMA
 opt_F = option.parse(parser.parse_args().opt_F, is_train=False)
 opt_P = option.parse(parser.parse_args().opt_P, is_train=False)
 opt_C = option.parse(parser.parse_args().opt_C, is_train=False)
+
 opt_F = option.dict_to_nonedict(opt_F)
 opt_P = option.dict_to_nonedict(opt_P)
 opt_C = option.dict_to_nonedict(opt_C)
-
 
 #### mkdir and logger
 util.mkdirs((path for key, path in opt_P['path'].items() if not key == 'experiments_root'
@@ -104,9 +104,9 @@ for test_loader in test_loaders:
             # save images
             suffix = opt_P['suffix']
             if suffix:
-                save_img_path = os.path.join(dataset_dir, str(step), img_name + suffix + '.png')
+                save_img_path = os.path.join(dataset_dir, img_name + suffix + '_' + str(step) + '.png')
             else:
-                save_img_path = os.path.join(dataset_dir, str(step), img_name + '.png')
+                save_img_path = os.path.join(dataset_dir, img_name + '_' + str(step) + '.png')
             util.save_img(sr_img, save_img_path)
 
             # calculate PSNR and SSIM
