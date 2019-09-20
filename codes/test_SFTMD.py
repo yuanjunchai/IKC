@@ -4,7 +4,7 @@ import time
 import argparse
 from collections import OrderedDict
 import numpy as np
-
+import torch
 import options.options as option
 import utils.util as util
 from data.util import bgr2ycbcr
