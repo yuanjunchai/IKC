@@ -11,7 +11,7 @@ datasets:
     name: div2k100
     mode: LQGTker
     dataroot_GT: /mnt/yjchai/SR_data/DIV2K_test/HR/x4/
-    dataroot_LQ: /mnt/yjchai/SR_data/DIV2K_test/LR/x4/
+    dataroot_LQ: ~
 #  test_2:  # the 2st test dataset
 #    name: set14
 #    mode: LQGTker

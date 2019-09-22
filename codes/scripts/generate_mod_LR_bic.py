@@ -20,6 +20,11 @@ def generate_mod_LR_bic():
     sourcedir = '/mnt/yjchai/SR_data/Flickr2K/Flickr2K_HR' #'/mnt/yjchai/SR_data/DIV2K_test_HR' #'/mnt/yjchai/SR_data/Flickr2K/Flickr2K_HR'
     savedir = '/mnt/yjchai/SR_data/Flickr2K_train' #'/mnt/yjchai/SR_data/DIV2K_test' #'/mnt/yjchai/SR_data/Flickr2K_train'
 
+    # load PCA matrix of enough kernel
+    print('load PCA matrix')
+    pca_matrix = torch.load('media/sdc/yjchai/IKC/codes/pca_matrix.pth', map_location=lambda storage, loc: storage)
+    print('PCA matrix shape: {}'.format(pca_matrix.shape))
+
     saveHRpath = os.path.join(savedir, 'HR', 'x' + str(mod_scale))
     saveLRpath = os.path.join(savedir, 'LR', 'x' + str(up_scale))
     saveBicpath = os.path.join(savedir, 'Bic', 'x' + str(up_scale))
@@ -66,12 +71,17 @@ def generate_mod_LR_bic():
         image = cv2.imread(os.path.join(sourcedir, filename))
         # gaussian random kernel
         if up_scale == 2:
-            blur_ker = util.random_isotropic_gaussian_kernel(sig_min=0.2, sig_max=2.0, l=21, tensor=False)
+            prepro = util.SRMDPreprocessing(up_scale, pca_matrix, para_input=15, kernel=21, noise=False, cuda=True,
+                                        sig_min=0.2, sig_max=2.0, rate_iso=1.0, scaling=3,
+                                        rate_cln=0.2, noise_high=0.0)
         elif up_scale == 3:
-            blur_ker = util.random_isotropic_gaussian_kernel(sig_min=0.2, sig_max=3.0, l=21, tensor=False)
+            prepro = util.SRMDPreprocessing(up_scale, pca_matrix, para_input=15, kernel=21, noise=False, cuda=True,
+                                        sig_min=0.2, sig_max=3.0, rate_iso=1.0, scaling=3,
+                                        rate_cln=0.2, noise_high=0.0)
         elif up_scale == 4:
-            blur_ker = util.random_isotropic_gaussian_kernel(sig_min=0.2, sig_max=4.0, l=21, tensor=False)
-
+            prepro = util.SRMDPreprocessing(up_scale, pca_matrix, para_input=15, kernel=21, noise=False, cuda=True,
+                                        sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                                        rate_cln=0.2, noise_high=0.0)
 
         width = int(np.floor(image.shape[1] / mod_scale))
         height = int(np.floor(image.shape[0] / mod_scale))

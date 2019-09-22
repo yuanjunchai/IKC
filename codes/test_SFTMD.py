@@ -25,6 +25,9 @@ util.setup_logger('base', opt_F['path']['log'], 'test_' + opt_F['name'], level=l
 logger = logging.getLogger('base')
 logger.info(option.dict2str(opt_F))
 
+# set random seed
+util.set_random_seed(0)
+
 # load PCA matrix of enough kernel
 print('load PCA matrix')
 pca_matrix = torch.load('./pca_matrix.pth',map_location=lambda storage, loc: storage)
@@ -59,7 +62,7 @@ for test_loader in test_loaders:
         img_path = test_data['GT_path'][0] if need_GT else test_data['LQ_path'][0]
         img_name = os.path.splitext(os.path.basename(img_path))[0]
         #### preprocessing for LR_img and kernel map
-        prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix, para_input=15, noise=False, cuda=True,
+        prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix, para_input=10, noise=False, cuda=True,
                                         sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
                                         rate_cln=0.2, noise_high=0.0)
         LR_img, ker_map = prepro(test_data['GT'])

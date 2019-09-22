@@ -47,8 +47,7 @@ def main():
 
     # choose small opt for SFTMD test, fill path of pre-trained model_F
     opt_F = opt_F['sftmd']
-    
-   
+
     #### set random seed
     seed = opt_P['train']['manual_seed']
     if seed is None:
@@ -265,7 +264,7 @@ def main():
                     model_P.test()
                     P_visuals = model_P.get_current_visuals()
                     est_ker_map = P_visuals['Batch_est_ker_map']
-                    
+
                     # Save images for reference
                     img_name = os.path.splitext(os.path.basename(val_data['LQ_path'][0]))[0]
                     img_dir = os.path.join(opt_P['path']['val_images'], img_name)

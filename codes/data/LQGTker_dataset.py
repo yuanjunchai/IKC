@@ -40,7 +40,6 @@ class LQGTKerDataset(data.Dataset):
             self.GT_paths = util.get_image_paths(opt['data_type'], opt['dataroot_GT']) # GT list
         else:
             print('Error: data_type is not matched in Dataset')
-        assert self.LR_paths, 'Error: LR paths are empty.'
         assert self.GT_paths, 'Error: GT paths are empty.'
 
         if self.LR_paths and self.GT_paths:
@@ -87,8 +86,8 @@ class LQGTKerDataset(data.Dataset):
             else:
                 resolution = None
             img_LR = util.read_img(self.LR_env, LR_path, resolution)
-        else:
-            ## down-sampling on-the-fly, randomly scale during training
+        else:  # down-sampling on-the-fly
+            # randomly scale during training
             if self.opt['phase'] == 'train':
                 random_scale = random.choice(self.random_scale_list)
                 H_s, W_s, _ = img_GT.shape
@@ -104,6 +103,12 @@ class LQGTKerDataset(data.Dataset):
                 # force to 3 channels
                 if img_GT.ndim == 2:
                     img_GT = cv2.cvtColor(img_GT, cv2.COLOR_GRAY2BGR)
+
+            H, W, _ = img_GT.shape
+            # using matlab imresize
+            img_LR = util.imresize_np(img_GT, 1 / scale, True)
+            if img_LR.ndim == 2:
+                img_LR = np.expand_dims(img_LR, axis=2)
 
 
         if self.opt['phase'] == 'train':
@@ -140,4 +145,4 @@ class LQGTKerDataset(data.Dataset):
         return {'LQ': img_LR, 'GT': img_GT, 'LQ_path': LR_path, 'GT_path': GT_path}
 
     def __len__(self):
-        return len(self.LR_paths)
+        return len(self.GT_paths)

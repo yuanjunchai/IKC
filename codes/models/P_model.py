@@ -104,7 +104,7 @@ class P_Model(BaseModel):
 
     def feed_data(self, lr_img, ker_map=None):
         self.var_L = lr_img.to(self.device)  # LQ
-        if ker_map:
+        if ker_map is not None:
             self.real_ker = ker_map.to(self.device)  # real kernel map
         # self.var_L = data['LQ'].to(self.device)
         # self.real_ker = data['real_ker'].to(self.device)

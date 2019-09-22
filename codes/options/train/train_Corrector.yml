@@ -10,7 +10,7 @@ scale: 4
 gpu_ids: [4, 5, 6]
 step: 7
 kernel_size: 21
-code_len: 10
+code_length: 10
 
 #### datasets
 datasets:
@@ -18,7 +18,7 @@ datasets:
     name: DIV2K
     mode: LQGTker
     dataroot_GT: /mnt/yjchai/SR_data/Flickr2K_train/HR/x4
-    dataroot_LQ: /mnt/yjchai/SR_data/Flickr2K_train/LR/x4
+    dataroot_LQ: ~
 
     use_shuffle: true
     n_workers: 8  # per GPU
@@ -32,7 +32,7 @@ datasets:
     name: DIV2K
     mode: LQGTker
     dataroot_GT: /mnt/yjchai/SR_data/DIV2K_test/HR/x4
-    dataroot_LQ: /mnt/yjchai/SR_data/DIV2K_test/HR/x4
+    dataroot_LQ: ~
 
 #### network structures
 network_G:
