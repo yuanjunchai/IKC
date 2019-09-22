@@ -45,4 +45,4 @@ network_G:
 
 #### path
 path:
-  pretrain_model_G: /media/sdc/yjchai/IKC/experiments/001_Predictor_x4_demo5000_DIV2K/models/latest_G.pth
+  pretrain_model_G: /media/sdc/yjchai/IKC/experiments/Predictor_latest_G.pth
