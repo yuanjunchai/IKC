@@ -35,11 +35,6 @@ logger = logging.getLogger('base')
 logger.info(option.dict2str(opt_P))
 logger.info(option.dict2str(opt_C))
 
-# load PCA matrix of enough kernel
-print('load PCA matrix')
-pca_matrix = torch.load('./pca_matrix.pth',map_location=lambda storage, loc: storage)
-print('PCA matrix shape: {}'.format(pca_matrix.shape))
-
 #### Create test dataset and dataloader
 test_loaders = []
 for phase, dataset_opt in sorted(opt_P['datasets'].items()):
@@ -74,13 +69,17 @@ for test_loader in test_loaders:
         need_GT = False if test_loader.dataset.opt['dataroot_GT'] is None else True
         img_path = test_data['GT_path'][0] if need_GT else test_data['LQ_path'][0]
         img_name = os.path.splitext(os.path.basename(img_path))[0]
-        #### preprocessing for LR_img and kernel map
-        prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, para_input=15, noise=False, cuda=True,
-                                        sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
-                                        rate_cln=0.2, noise_high=0.0)
-        LR_img, ker_map = prepro(test_data['GT'])
+
+        #### preprocessing for LR_img and kernel map, as train stage
+        #prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, para_input=15, noise=False, cuda=True,
+        #                                sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+        #                                rate_cln=0.2, noise_high=0.0)
+        #LR_img, ker_map = prepro(test_data['GT'])
+        #### input dataset_LQ
+        LR_img = test_data['LQ']
+
         # Predictor test
-        model_P.feed_data(LR_img, ker_map)
+        model_P.feed_data(LR_img)
         model_P.test()
         P_visuals = model_P.get_current_visuals()
         est_ker_map = P_visuals['Batch_est_ker_map']
@@ -94,7 +93,7 @@ for test_loader in test_loaders:
             F_visuals = model_F.get_current_visuals()
             SR_img = F_visuals['Batch_SR']
 
-            model_C.feed_data(SR_img, est_ker_map, ker_map)
+            model_C.feed_data(SR_img, est_ker_map)
             model_C.test()
             C_visuals = model_C.get_current_visuals()
             est_ker_map = C_visuals['Batch_est_ker_map']

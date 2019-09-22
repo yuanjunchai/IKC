@@ -104,7 +104,8 @@ class C_Model(BaseModel):
     def feed_data(self, SR_img, est_ker_map, ker_map=None):
         self.SR_H = SR_img.to(self.device)
         self.ker = est_ker_map.to(self.device)
-        self.real_ker = ker_map.to(self.device)
+        if ker_map:
+            self.real_ker = ker_map.to(self.device)
         # self.var_L = data['LQ'].to(self.device)  # LQ
         # self.real_H = data['GT'].to(self.device)  # GT
         # self.SR_H = data['SR'].to(self.device)  # SR
