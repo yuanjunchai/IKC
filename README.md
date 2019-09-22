@@ -45,8 +45,8 @@ After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/gener
 python codes/scripts/generate_mod_LR_bic.py
 ```
 ### TODO: data
-To train, dataset_GT is used to produce actual LR and corresponding in [`codes/train_IKC.py`] and [`codes/train_SFTMD.py`]. Therefore, dataset_LQ is not really used.<br/>
-To test, the operation as above in [`codes/test_SFTMD.py`] so as to get kernel maps. However, you can use dataset_LQ in [`codes/test_IKC.py`]!!<br/>
+To train, dataset_GT is used to produce actual LR and corresponding in [`train_IKC.py`](codes/train_IKC.py) and [`train_SFTMD.py`](codes/train_SFTMD.py). Therefore, dataset_LQ is not really used.<br/>
+To test, the operation is the same as above in [`test_SFTMD.py`](codes/test_SFTMD.py) so as to get kernel maps. However, you can use dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!<br/>
 I will improve the methods of using data.<br/>
 Thank you!
 ## Getting Started
