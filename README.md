@@ -5,6 +5,8 @@ Here is the implementation of ['Blind Super-Resolution With Iterative Kernel Cor
 Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://github.com/open-mmlab/mmsr).
 About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/master/codes).<br/>
 Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
+### Updates
+[2019-09-22] IKC v0.1 is modified.
 
 ### Architecture
 <p align="center">
@@ -44,11 +46,10 @@ After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/gener
 ```bash
 python codes/scripts/generate_mod_LR_bic.py
 ```
-### TODO: data
+### About data
 When train, dataset_GT is used to produce actual LR and corresponding kernel in [`train_IKC.py`](codes/train_IKC.py) and [`train_SFTMD.py`](codes/train_SFTMD.py). Therefore, dataset_LQ is not used.<br/>
-When test, the operation is the same as above in [`test_SFTMD.py`](codes/test_SFTMD.py) so as to get kernel maps. However, you can use dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!<br/>
-I will improve the methods of using data.<br/>
-Thank you!
+When test, the operation is the same as above in [`test_SFTMD.py`](codes/test_SFTMD.py) so as to get kernel maps.<br/>
+However, you need to change dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!
 ## Getting Started
 You could download the pre-trained models from `./checkpoints` directory.<br/>
 Remember: change opt['path']['pretrain_model_G'] of the .yaml to the models' path you saved.
