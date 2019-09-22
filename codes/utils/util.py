@@ -551,6 +551,18 @@ def tensor2img(tensor, out_type=np.uint8, min_max=(0, 1)):
     return img_np.astype(out_type)
 
 
+def img2tensor(img):
+    '''
+    # BGR to RGB, HWC to CHW, numpy to tensor
+    Input: img(H, W, C), [0,255], np.uint8 (default)
+    Output: 3D(C,H,W), RGB order, float tensor
+    '''
+    img = img.astype(np.float32) / 255.
+    img = img[:, :, [2, 1, 0]]
+    img = torch.from_numpy(np.ascontiguousarray(np.transpose(img, (2, 0, 1)))).float()
+    return img
+
+
 def save_img(img, img_path, mode='RGB'):
     cv2.imwrite(img_path, img)
 

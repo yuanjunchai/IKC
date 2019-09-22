@@ -199,10 +199,10 @@ def main():
                 for _, val_data in enumerate(val_loader):
                     idx += 1
                     #### preprocessing for LR_img and kernel map
-            prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix, para_input=opt_F['code_length'],
-                                            kernel=opt_F['kernel_size'], noise=False, cuda=True,
-                                            sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
-                                            rate_cln=0.2, noise_high=0.0)
+                    prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix, para_input=opt_F['code_length'],
+                                                    kernel=opt_F['kernel_size'], noise=False, cuda=True,
+                                                    sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                                                    rate_cln=0.2, noise_high=0.0)
                     LR_img, ker_map = prepro(val_data['GT'])
 
                     model_F.feed_data(val_data, LR_img, ker_map)
