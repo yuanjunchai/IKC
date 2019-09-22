@@ -44,6 +44,11 @@ After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/gener
 ```bash
 python codes/scripts/generate_mod_LR_bic.py
 ```
+### TODO: data
+To train, dataset_GT is used to produce actual LR and corresponding in train_IKC.py and train_SFTMD.py. Therefore, dataset_LQ is not really used.
+To test, the operation as above in test_SFTMD.py so as to get kernel map. However, you could use dataset_LQ in test_IKC.py.
+I will update the methods of using data.
+Thank you!
 ## Getting Started
 You could download the pre-trained models from `./checkpoints` directory.<br/>
 Remember: change opt['path']['pretrain_model_G'] of the .yaml to the models' path you saved.
