@@ -42,14 +42,15 @@ pip install -r requirements.txt
 ## Dataset Preparation
 We use [DIV2K](https://data.vision.ee.ethz.ch/cvl/DIV2K/), [Flickr2K](http://cv.snu.ac.kr/research/EDSR/Flickr2K.tar), [Set5](https://uofi.box.com/shared/static/kfahv87nfe8ax910l85dksyl2q212voc.zip), [Set14](https://uofi.box.com/shared/static/igsnfieh4lz68l926l8xbklwsnnk8we9.zip), [Urban100](https://uofi.box.com/shared/static/65upg43jjd0a4cwsiqgl6o6ixube6klm.zip), [BSD100](https://uofi.box.com/shared/static/qgctsplb8txrksm9to9x01zfa4m61ngq.zip) datasets. 
 To train a model on the full dataset(DIV2K+Flickr2K, totally 3450 images), download datasets from official websites. 
-After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/generate_mod_LR_bic.py) to generate LRblur/LR/HR/Bicubic datasets paths. 
+After download, run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/generate_mod_LR_bic.py) to generate LRblur/LR/HR/Bicubic datasets paths and corresponding kernel map. 
 ```bash
 python codes/scripts/generate_mod_LR_bic.py
 ```
 ### About data
 When train, dataset_GT is used to produce actual LR and corresponding kernel in [`train_IKC.py`](codes/train_IKC.py) and [`train_SFTMD.py`](codes/train_SFTMD.py). Therefore, dataset_LQ is not used.<br/>
 When test, the operation is the same as above in [`test_SFTMD.py`](codes/test_SFTMD.py) so as to get kernel maps.<br/>
-However, you need to change dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!
+However, you need to change dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!<br/>
+Another method is use ['generate_mod_LR_bic.py'].
 ## Getting Started
 You could download the pre-trained models from `./checkpoints` directory.<br/>
 Remember: change opt['path']['pretrain_model_G'] of the .yaml to the models' path you saved.
