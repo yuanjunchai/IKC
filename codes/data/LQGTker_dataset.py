@@ -41,9 +41,8 @@ class LQGTKerDataset(data.Dataset):
         else:
             print('Error: data_type is not matched in Dataset')
         assert self.GT_paths, 'Error: GT paths are empty.'
-
         if self.LR_paths and self.GT_paths:
-            assert len(self.LR_paths) == len(self.GT_paths), 'GT and LR datasets have different number of images - {}, {}.'.format(len(self.paths_LR), len(self.paths_GT))
+            assert len(self.LR_paths) == len(self.GT_paths), 'GT and LR datasets have different number of images - {}, {}.'.format(len(self.LR_paths), len(self.GT_paths))
         self.random_scale_list = [1]
 
 

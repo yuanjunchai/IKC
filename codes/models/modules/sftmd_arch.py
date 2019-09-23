@@ -105,7 +105,7 @@ class SFT_Layer(nn.Module):
 
     def forward(self, feature_maps, para_maps):
         cat_input = torch.cat((feature_maps, para_maps), dim=1)
-        mul = F.sigmoid(self.mul_conv2(self.mul_leaky(self.mul_conv1(cat_input))))
+        mul = torch.sigmoid(self.mul_conv2(self.mul_leaky(self.mul_conv1(cat_input))))
         add = self.add_conv2(self.add_leaky(self.add_conv1(cat_input)))
         return feature_maps * mul + add
 

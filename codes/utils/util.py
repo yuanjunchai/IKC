@@ -272,6 +272,12 @@ def random_isotropic_gaussian_kernel(sig_min=0.2, sig_max=4.0, l=21, tensor=Fals
     return k
 
 
+def stable_isotropic_gaussian_kernel(sig=2.6, l=21, tensor=False):
+    x = sig
+    k = isotropic_gaussian_kernel(l, x, tensor=tensor)
+    return k
+
+
 def random_gaussian_kernel(l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, tensor=False):
     if np.random.random() < rate_iso:
         return random_isotropic_gaussian_kernel(l=l, sig_min=sig_min, sig_max=sig_max, tensor=tensor)
@@ -279,10 +285,21 @@ def random_gaussian_kernel(l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling
         return random_anisotropic_gaussian_kernel(l=l, sig_min=sig_min, sig_max=sig_max, scaling=scaling, tensor=tensor)
 
 
+def stable_gaussian_kernel(l=21, sig=2.6, tensor=False):
+    return stable_isotropic_gaussian_kernel(sig=sig, l=l, tensor=tensor)
+
+
 def random_batch_kernel(batch, l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, tensor=True):
     batch_kernel = np.zeros((batch, l, l))
     for i in range(batch):
         batch_kernel[i] = random_gaussian_kernel(l=l, sig_min=sig_min, sig_max=sig_max, rate_iso=rate_iso, scaling=scaling, tensor=False)
+    return torch.FloatTensor(batch_kernel) if tensor else batch_kernel
+
+
+def stable_batch_kernel(batch, l=21, sig=2.6, tensor=True):
+    batch_kernel = np.zeros((batch, l, l))
+    for i in range(batch):
+        batch_kernel[i] = stable_gaussian_kernel(l=l, sig=sig, tensor=False)
     return torch.FloatTensor(batch_kernel) if tensor else batch_kernel
 
 
@@ -315,15 +332,20 @@ def b_CPUVar_Bicubic(variable, scale):
 
 
 class BatchSRKernel(object):
-    def __init__(self, l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3):
+    def __init__(self, l=21, sig=2.6, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3):
         self.l = l
+        self.sig = sig
         self.sig_min = sig_min
         self.sig_max = sig_max
         self.rate = rate_iso
         self.scaling = scaling
 
-    def __call__(self, batch, tensor=False):
-        return random_batch_kernel(batch, l=self.l, sig_min=self.sig_min, sig_max=self.sig_max, rate_iso=self.rate, scaling=self.scaling, tensor=tensor)
+    def __call__(self, random, batch, tensor=False):
+        if random == True: #random kernel
+            return random_batch_kernel(batch, l=self.l, sig_min=self.sig_min, sig_max=self.sig_max, rate_iso=self.rate,
+                                       scaling=self.scaling, tensor=tensor)
+        else: #stable kernel
+            return stable_batch_kernel(batch, l=self.l, sig=self.sig, tensor=tensor)
 
 
 class PCAEncoder(object):
@@ -338,9 +360,6 @@ class PCAEncoder(object):
     def __call__(self, batch_kernel):
         B, H, W = batch_kernel.size() #[B, l, l]
         return torch.bmm(batch_kernel.view((B, 1, H * W)), self.weight.expand((B, ) + self.size)).view((B, -1))
-
-    def decode(self, code):
-        code = code.view([10,1])
 
 
 class BatchBlur(nn.Module):
@@ -369,9 +388,9 @@ class BatchBlur(nn.Module):
 
 
 class SRMDPreprocessing(object):
-    def __init__(self, scale, pca, para_input=10, kernel=21, noise=True, cuda=False, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, rate_cln=0.2, noise_high=0.08):
+    def __init__(self, scale, pca, random, para_input=10, kernel=21, noise=True, cuda=False, sig=2.6, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, rate_cln=0.2, noise_high=0.08):
         self.encoder = PCAEncoder(pca, cuda=cuda)
-        self.kernel_gen = BatchSRKernel(l=kernel, sig_min=sig_min, sig_max=sig_max, rate_iso=rate_iso, scaling=scaling)
+        self.kernel_gen = BatchSRKernel(l=kernel, sig=sig, sig_min=sig_min, sig_max=sig_max, rate_iso=rate_iso, scaling=scaling)
         self.blur = BatchBlur(l=kernel)
         self.para_in = para_input
         self.l = kernel
@@ -380,11 +399,12 @@ class SRMDPreprocessing(object):
         self.cuda = cuda
         self.rate_cln = rate_cln
         self.noise_high = noise_high
+        self.random = random
 
     def __call__(self, hr_tensor, kernel=False):
         ### hr_tensor is tensor, not cuda tensor
         B, C, H, W = hr_tensor.size()
-        b_kernels = Variable(self.kernel_gen(B, tensor=True)).cuda() if self.cuda else Variable(self.kernel_gen(B, tensor=True))
+        b_kernels = Variable(self.kernel_gen(self.random, B, tensor=True)).cuda() if self.cuda else Variable(self.kernel_gen(self.random, B, tensor=True))
         # blur
         if self.cuda:
             hr_blured_var = self.blur(Variable(hr_tensor).cuda(), b_kernels)
@@ -419,7 +439,8 @@ class SRMDPreprocessing(object):
 
 
 class IsoGaussian(object):
-    def __init__(self, scale, para_input=15, kernel=21, noise=False, cuda=False, sig_min=0.2, sig_max=4.0, noise_high=0.0):
+    def __init__(self, scale, para_input=10, kernel=21, noise=False, cuda=False, sig_min=1.8, sig_max=3.2, noise_high=0.0):
+        self.encoder = PCAEncoder(pca, cuda=cuda)
         self.blur = BatchBlur(l=kernel)
         self.min = sig_min
         self.max = sig_max
@@ -444,7 +465,8 @@ class IsoGaussian(object):
             hr_blured_var = self.blur(Variable(hr_tensor), kernels)
 
         # kernel encode
-        kernel_code = Variable(torch.FloatTensor(kernel_width))  # B x self.para_input
+        # kernel_code = Variable(torch.FloatTensor(kernel_width))  # B x self.para_input
+        kernel_code = self.encoder(kernels)
         if self.cuda:
             lr_blured_t = b_GPUVar_Bicubic(hr_blured_var, self.scale)
         else:
@@ -551,6 +573,9 @@ def tensor2img(tensor, out_type=np.uint8, min_max=(0, 1)):
     return img_np.astype(out_type)
 
 
+def save_img(img, img_path, mode='RGB'):
+    cv2.imwrite(img_path, img)
+
 def img2tensor(img):
     '''
     # BGR to RGB, HWC to CHW, numpy to tensor
@@ -563,9 +588,38 @@ def img2tensor(img):
     return img
 
 
-def save_img(img, img_path, mode='RGB'):
-    cv2.imwrite(img_path, img)
+def DUF_downsample(x, scale=4):
+    """Downsamping with Gaussian kernel used in the DUF official code
 
+    Args:
+        x (Tensor, [B, T, C, H, W]): frames to be downsampled.
+        scale (int): downsampling factor: 2 | 3 | 4.
+    """
+
+    assert scale in [2, 3, 4], 'Scale [{}] is not supported'.format(scale)
+
+    def gkern(kernlen=13, nsig=1.6):
+        import scipy.ndimage.filters as fi
+        inp = np.zeros((kernlen, kernlen))
+        # set element at the middle to one, a dirac delta
+        inp[kernlen // 2, kernlen // 2] = 1
+        # gaussian-smooth the dirac, resulting in a gaussian filter mask
+        return fi.gaussian_filter(inp, nsig)
+
+    B, T, C, H, W = x.size()
+    x = x.view(-1, 1, H, W)
+    pad_w, pad_h = 6 + scale * 2, 6 + scale * 2  # 6 is the pad of the gaussian filter
+    r_h, r_w = 0, 0
+    if scale == 3:
+        r_h = 3 - (H % 3)
+        r_w = 3 - (W % 3)
+    x = F.pad(x, [pad_w, pad_w + r_w, pad_h, pad_h + r_h], 'reflect')
+
+    gaussian_filter = torch.from_numpy(gkern(13, 0.4 * scale)).type_as(x).unsqueeze(0).unsqueeze(0)
+    x = F.conv2d(x, gaussian_filter, stride=scale)
+    x = x[:, :, 2:-2, 2:-2]
+    x = x.view(B, T, C, x.size(2), x.size(3))
+    return x
 
 ####################
 # metric

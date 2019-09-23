@@ -189,8 +189,8 @@ def main():
             # model.update_learning_rate(current_step, warmup_iter=opt_P['train']['warmup_iter'])
 
             #### preprocessing for LR_img and kernel map
-            prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, para_input=opt_P['code_length'],
-                                                  kernel=opt_P['kernel_size'], noise=False, cuda=True,
+            prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, random=True, para_input=opt_P['code_length'],
+                                                  kernel=opt_P['kernel_size'], noise=False, cuda=True, sig=2.6,
                                                   sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
                                                   rate_cln=0.2, noise_high=0.0)
             LR_img, ker_map = prepro(train_data['GT'])
@@ -251,8 +251,8 @@ def main():
                 avg_psnr = 0.0
                 idx = 0
                 for _, val_data in enumerate(val_loader):
-                    prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, para_input=opt_P['code_length'],
-                                                    kernel=opt_P['kernel_size'], noise=False, cuda=True,
+                    prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, random=True, para_input=opt_P['code_length'],
+                                                    kernel=opt_P['kernel_size'], noise=False, cuda=True, sig=2.6,
                                                     sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
                                                     rate_cln=0.2, noise_high=0.0)
                     LR_img, ker_map = prepro(val_data['GT'])

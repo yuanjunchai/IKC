@@ -17,15 +17,15 @@ def generate_mod_LR_bic():
     up_scale = 4
     mod_scale = 4
     # set data dir
-    sourcedir = '/mnt/yjchai/SR_data/BSDS100' #'/mnt/yjchai/SR_data/DIV2K_test_HR' #'/mnt/yjchai/SR_data/Flickr2K/Flickr2K_HR'
-    savedir = '/mnt/yjchai/SR_data/BSDS100_test' #'/mnt/yjchai/SR_data/DIV2K_test' #'/mnt/yjchai/SR_data/Flickr2K_train'
+    sourcedir = '/mnt/yjchai/SR_data/Set5' #'/mnt/yjchai/SR_data/DIV2K_test_HR' #'/mnt/yjchai/SR_data/Flickr2K/Flickr2K_HR'
+    savedir = '/mnt/yjchai/SR_data/Set5_test' #'/mnt/yjchai/SR_data/DIV2K_test' #'/mnt/yjchai/SR_data/Flickr2K_train'
 
     # set random seed
     util.set_random_seed(0)
 
     # load PCA matrix of enough kernel
     print('load PCA matrix')
-    pca_matrix = torch.load('/media/sdc/yjchai/IKC/codes/pca_matrix.pth')
+    pca_matrix = torch.load('/media/sdc/yjchai/IKC/codes/pca_matrix.pth', map_location=lambda storage, loc: storage)
     print('PCA matrix shape: {}'.format(pca_matrix.shape))
 
     saveHRpath = os.path.join(savedir, 'HR', 'x' + str(mod_scale))
@@ -88,14 +88,17 @@ def generate_mod_LR_bic():
             image_HR = image[0:mod_scale * height, 0:mod_scale * width, :]
         else:
             image_HR = image[0:mod_scale * height, 0:mod_scale * width]
+        # LR_blur, by random gaussian kernel
         img_HR = util.img2tensor(image_HR)
         C, H, W = img_HR.size()
-        # LR_blur, by random gaussian kernel
-        prepro = util.SRMDPreprocessing(up_scale, pca_matrix, para_input=10, kernel=21, noise=False, cuda=True,
-                                        sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
-                                        rate_cln=0.2, noise_high=0.0)
+        # sig_list = [1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2]
+        sig = 2.6
+        prepro = util.SRMDPreprocessing(up_scale, pca_matrix, random=False, para_input=10, kernel=21, noise=False,
+                                        cuda=True, sig=sig, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                                        rate_cln=0.2, noise_high=0.0) #random(sig_min, sig_max) | stable kernel(sig)
         LR_img, ker_map = prepro(img_HR.view(1, C, H, W))
         image_LR_blur = util.tensor2img(LR_img)
+        cv2.imwrite(os.path.join(saveLRblurpath, 'sig{}_'.format(str(sig)) + filename), image_LR_blur)
         # LR
         image_LR = imresize_np(image_HR, 1 / up_scale, True)
         # bic
@@ -104,11 +107,10 @@ def generate_mod_LR_bic():
         cv2.imwrite(os.path.join(saveHRpath, filename), image_HR)
         cv2.imwrite(os.path.join(saveLRpath, filename), image_LR)
         cv2.imwrite(os.path.join(saveBicpath, filename), image_Bic)
-        cv2.imwrite(os.path.join(saveLRblurpath, filename), image_LR_blur)
 
         kernel_map_tensor[i] = ker_map
     # save dataset corresponding kernel maps
-    torch.save(kernel_map_tensor, './BSDS100_kermap.pth')
+    torch.save(kernel_map_tensor, './Set5_sig2.6_kermap.pth')
     print("Image Blurring & Down smaple Done: X"+str(up_scale))
 
 if __name__ == "__main__":
