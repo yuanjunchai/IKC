@@ -1,15 +1,15 @@
-# Not exactly the same as SRResNet in <Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network>
-# With 16 Residual blocks w/o BN
-
 #### general settings
 name: 001_SFTMD_DEMO_x4_demo_DIV2K
 use_tb_logger: true
 model: sftmd
 distortion: sr
 scale: 4
-gpu_ids: [4, 5, 6]
+gpu_ids: [6, 7]
 kernel_size: 21
 code_length: 10
+sig_min: 0.2
+sig_max: 4.0
+sig: 2.6
 
 #### datasets
 datasets:
@@ -21,7 +21,7 @@ datasets:
 
     use_shuffle: true
     n_workers: 8  # per GPU
-    batch_size: 32
+    batch_size: 16
     GT_size: 256
     LR_size: 64
     use_flip: true
@@ -41,6 +41,7 @@ network_G:
   nf: 64
   nb: 16
   upscale: 4
+  code_length: 10
 
 #### path
 path:
@@ -73,7 +74,7 @@ logger:
   save_checkpoint_freq: !!float 5e4
 
 sftmd:
-  gpu_ids: [4, 5, 6, 7]
+  gpu_ids: [6, 7]
   is_train: False
   scale: 4
   datasets:
@@ -87,14 +88,19 @@ sftmd:
       LR_size: 64
       data_type: img
       color: RGB
-      #model_path: /media/sdc/yjchai/IKC/experiments/001_SFTMD_x4_scratch_DIV2K/models/latest_G.pth
 
   model: sftmd
 
   network_G:
     which_model_G: SFTMD
+    in_nc: 3
+    out_nc: 3
+    nf: 64
+    nb: 16
+    upscale: 4
+    code_length: 10
 
   path:
     results_root: /media/sdc/yjchai/IKC/results
-    pretrain_model_G: /media/sdc/yjchai/IKC/experiments/001_SFTMD_DEMO_x4_start_DIV2K/models/150000_G.pth
+    pretrain_model_G: /media/sdc/yjchai/IKC/experiments/001_SFTMD_DEMO_x4_start_DIV2K/models/latest_G.pth
     strict_load: True

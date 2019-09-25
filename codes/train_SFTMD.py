@@ -47,11 +47,11 @@ def main():
     util.set_random_seed(seed)
 
     # create PCA matrix of enough kernel and save it, to ensure all kernel have same corresponding kernel maps
-    batch_ker = util.random_batch_kernel(batch=30000, l=21, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3, tensor=False)
+    batch_ker = util.random_batch_kernel(batch=30000, l=opt_F['kernel_size'], sig_min=opt_F['sig_min'], sig_max=opt_F['sig_max'], rate_iso=1.0, scaling=3, tensor=False)
     print('batch kernel shape: {}'.format(batch_ker.shape))
     b = np.size(batch_ker, 0)
     batch_ker = batch_ker.reshape((b, -1))
-    pca_matrix = util.PCA(batch_ker, k=10).float()
+    pca_matrix = util.PCA(batch_ker, k=opt_F['code_length']).float()
     print('PCA matrix shape: {}'.format(pca_matrix.shape))
     torch.save(pca_matrix, './pca_matrix.pth')
     print('Save PCA matrix at: ./pca_matrix.pth')
@@ -109,7 +109,7 @@ def main():
         util.setup_logger('base', opt_F['path']['log'], 'train', level=logging.INFO, screen=True)
         logger = logging.getLogger('base')
 
-        
+
     #### create train and val dataloader
     dataset_ratio = 200   # enlarge the size of each epoch
     for phase, dataset_opt in opt_F['datasets'].items():
@@ -166,8 +166,8 @@ def main():
                 break
             #### preprocessing for LR_img and kernel map
             prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix, random=True, para_input=opt_F['code_length'],
-                                            kernel=opt_F['kernel_size'], noise=False, cuda=True, sig=2.6,
-                                            sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                                            kernel=opt_F['kernel_size'], noise=False, cuda=True, sig=opt_F['sig'],
+                                            sig_min=opt_F['sig_min'], sig_max=opt_F['sig_max'], rate_iso=1.0, scaling=3,
                                             rate_cln=0.2, noise_high=0.0)
             LR_img, ker_map = prepro(train_data['GT'])
 
@@ -199,9 +199,9 @@ def main():
                 for _, val_data in enumerate(val_loader):
                     idx += 1
                     #### preprocessing for LR_img and kernel map
-                    prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix,random=True, para_input=opt_F['code_length'],
-                                                    kernel=opt_F['kernel_size'], noise=False, cuda=True, sig=2.6,
-                                                    sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                    prepro = util.SRMDPreprocessing(opt_F['scale'], pca_matrix, random=True, para_input=opt_F['code_length'],
+                                                    kernel=opt_F['kernel_size'], noise=False, cuda=True, sig=opt_F['sig'],
+                                                    sig_min=opt_F['sig_min'], sig_max=opt_F['sig_max'], rate_iso=1.0, scaling=3,
                                                     rate_cln=0.2, noise_high=0.0)
                     LR_img, ker_map = prepro(val_data['GT'])
 
@@ -251,7 +251,7 @@ def main():
         logger.info('Saving the final model.')
         model_F.save('latest')
         logger.info('End of SFTMD training.')
-        
+
 
 if __name__ == '__main__':
     main()

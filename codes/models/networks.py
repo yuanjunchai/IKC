@@ -22,15 +22,17 @@ def define_G(opt):
         netG = RRDBNet_arch.RRDBNet(in_nc=opt_net['in_nc'], out_nc=opt_net['out_nc'],
                                     nf=opt_net['nf'], nb=opt_net['nb'])
     elif which_model == 'Predictor':
-        netG = sftmd_arch.Predictor()
+        netG = sftmd_arch.Predictor(in_nc=opt_net['in_nc'], nf=opt_net['nf'], code_len=opt_net['code_length'])
     elif which_model == 'Corrector':
-        netG = sftmd_arch.Corrector()
+        netG = sftmd_arch.Corrector(in_nc=opt_net['in_nc'], nf=opt_net['nf'], code_len=opt_net['code_length'])
     elif which_model == 'SFTMD':
-        netG = sftmd_arch.SFTMD()
+        netG = sftmd_arch.SFTMD(in_nc=opt_net['in_nc'], out_nc=opt_net['out_nc'],
+                                nf=opt_net['nf'], nb=opt_net['nb'], scale=opt_net['upscale'], input_para=opt_net['code_length'])
     elif which_model == 'SRResNet':
         netG = sftmd_arch.SRResNet()
     elif which_model == 'SFTMD_DEMO':
-        netG = sftmd_arch.SFTMD_DEMO()
+        netG = sftmd_arch.SFTMD_DEMO(in_nc=opt_net['in_nc'], out_nc=opt_net['out_nc'],
+                                nf=opt_net['nf'], nb=opt_net['nb'], scale=opt_net['upscale'], input_para=opt_net['code_length'])
     # elif which_model == 'sft_arch':  # SFT-GAN
     #     netG = sft_arch.SFT_Net()
     else:
