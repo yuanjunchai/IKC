@@ -6,7 +6,7 @@ Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://githu
 About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/master/codes).<br/>
 Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
 ### Updates
-[2019-09-22] IKC v0.1 is modified.
+[2019-09-22] IKC v0.1 is modified.<br/>
 [2019-09-25] IKC v0.2 is modified. User could use .yaml to change different settings(scale, sig, etc.)
 
 ### Architecture
