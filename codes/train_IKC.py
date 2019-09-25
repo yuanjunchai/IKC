@@ -190,8 +190,8 @@ def main():
 
             #### preprocessing for LR_img and kernel map
             prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, random=True, para_input=opt_P['code_length'],
-                                                  kernel=opt_P['kernel_size'], noise=False, cuda=True, sig=2.6,
-                                                  sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                                                  kernel=opt_P['kernel_size'], noise=False, cuda=True, sig=opt_P['sig'],
+                                                  sig_min=opt_P['sig_min'], sig_max=opt_P['sig_max'], rate_iso=1.0, scaling=3,
                                                   rate_cln=0.2, noise_high=0.0)
             LR_img, ker_map = prepro(train_data['GT'])
 
@@ -252,8 +252,8 @@ def main():
                 idx = 0
                 for _, val_data in enumerate(val_loader):
                     prepro = util.SRMDPreprocessing(opt_P['scale'], pca_matrix, random=True, para_input=opt_P['code_length'],
-                                                    kernel=opt_P['kernel_size'], noise=False, cuda=True, sig=2.6,
-                                                    sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3,
+                                                    kernel=opt_P['kernel_size'], noise=False, cuda=True, sig=opt_P['sig'],
+                                                    sig_min=opt_P['sig_min'], sig_max=opt_P['sig_max'], rate_iso=1.0, scaling=3,
                                                     rate_cln=0.2, noise_high=0.0)
                     LR_img, ker_map = prepro(val_data['GT'])
                     single_img_psnr = 0.0
