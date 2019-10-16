@@ -138,6 +138,12 @@ class SFTMD(nn.Module):
         self.conv2 = nn.Conv2d(64, 64, 3, stride=1, padding=1)
         self.relu_conv2 = nn.LeakyReLU(0.2)
         self.conv3 = nn.Conv2d(64, 64, 3, stride=1, padding=1)
+        
+        #sft_branch is not used.
+        sft_branch = []
+        for i in range(nb):
+            sft_branch.append(SFT_Residual_Block())
+        self.sft_branch = nn.Sequential(*sft_branch)
 
 
         for i in range(nb):
