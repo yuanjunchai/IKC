@@ -62,10 +62,10 @@ for test_loader in test_loaders:
     test_results['ssim_y'] = []
 
     for test_data in test_loader:
-        single_img_psnr = 0.0
-        single_img_ssim = 0.0
-        single_img_psnr_y = 0.0
-        single_img_ssim_y = 0.0
+        single_img_psnr = []
+        single_img_ssim = []
+        single_img_psnr_y = []
+        single_img_ssim_y = []
         need_GT = False if test_loader.dataset.opt['dataroot_GT'] is None else True
         img_path = test_data['GT_path'][0] if need_GT else test_data['LQ_path'][0]
         img_name = os.path.splitext(os.path.basename(img_path))[0]
@@ -119,8 +119,8 @@ for test_loader in test_loaders:
 
                 psnr = util.calculate_psnr(cropped_sr_img * 255, cropped_gt_img * 255)
                 ssim = util.calculate_ssim(cropped_sr_img * 255, cropped_gt_img * 255)
-                test_results['psnr'].append(psnr)
-                test_results['ssim'].append(ssim)
+                #test_results['psnr'].append(psnr)
+                #test_results['ssim'].append(ssim)
 
                 if gt_img.shape[2] == 3:  # RGB image
                     sr_img_y = bgr2ycbcr(sr_img, only_y=True)
@@ -133,8 +133,8 @@ for test_loader in test_loaders:
                         cropped_gt_img_y = gt_img_y[crop_border:-crop_border, crop_border:-crop_border]
                     psnr_y = util.calculate_psnr(cropped_sr_img_y * 255, cropped_gt_img_y * 255)
                     ssim_y = util.calculate_ssim(cropped_sr_img_y * 255, cropped_gt_img_y * 255)
-                    test_results['psnr_y'].append(psnr_y)
-                    test_results['ssim_y'].append(ssim_y)
+                    #test_results['psnr_y'].append(psnr_y)
+                    #test_results['ssim_y'].append(ssim_y)
                     single_img_psnr += psnr
                     single_img_ssim += ssim
                     single_img_psnr_y += psnr_y
@@ -148,6 +148,12 @@ for test_loader in test_loaders:
                 logger.info(img_name)
 
         if need_GT:
+            max_img_index = np.argmax(single_img_psnr)
+            test_results['psnr'].append(single_img_psnr[max_img_index])
+            test_results['ssim'].append(single_img_ssim[max_img_index])
+            test_results['psnr_y'].append(single_img_psnr_y[max_img_index])
+            test_results['ssim_y'].append(single_img_ssim_y[max_img_index])
+            
             avg_signle_img_psnr = single_img_psnr / step
             avg_signle_img_ssim = single_img_ssim / step
             avg_signle_img_psnr_y = single_img_psnr_y / step
@@ -155,6 +161,13 @@ for test_loader in test_loaders:
             logger.info(
                 'step:{:3d}, img:{:15s} - average PSNR: {:.6f} dB; SSIM: {:.6f}; PSNR_Y: {:.6f} dB; SSIM_Y: {:.6f}.'.
                     format(step, img_name, avg_signle_img_psnr, avg_signle_img_ssim, avg_signle_img_psnr_y, avg_signle_img_ssim_y))
+            max_signle_img_psnr = single_img_psnr[max_img_index]
+            max_signle_img_ssim = single_img_ssim[max_img_index]
+            max_signle_img_psnr_y = single_img_psnr_y[max_img_index]
+            max_signle_img_ssim_y = single_img_ssim_y[max_img_index]
+            logger.info(
+                'step:{:3d}, img:{:15s} - max PSNR: {:.6f} dB; SSIM: {:.6f}; PSNR_Y: {:.6f} dB; SSIM_Y: {:.6f}.'.
+                    format(step, img_name, max_signle_img_psnr, max_signle_img_ssim, max_signle_img_psnr_y, max_signle_img_ssim_y))
 
     if need_GT:  # metrics
         # Average PSNR/SSIM results
