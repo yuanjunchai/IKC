@@ -331,6 +331,23 @@ def b_CPUVar_Bicubic(variable, scale):
     return re_tensor_v
 
 
+def random_batch_noise(batch, high, rate_cln=1.0):
+    noise_level = np.random.uniform(size=(batch, 1)) * high
+    noise_mask = np.random.uniform(size=(batch, 1))
+    noise_mask[noise_mask < rate_cln] = 0
+    noise_mask[noise_mask >= rate_cln] = 1
+    return noise_level * noise_mask
+
+
+def b_GaussianNoising(tensor, sigma, mean=0.0, noise_size=None, min=0.0, max=1.0):
+    if noise_size is None:
+        size = tensor.size()
+    else:
+        size = noise_size
+    noise = torch.mul(torch.FloatTensor(np.random.normal(loc=mean, scale=1.0, size=size)), sigma.view(sigma.size() + (1, 1)))
+    return torch.clamp(noise + tensor, min=min, max=max)
+
+
 class BatchSRKernel(object):
     def __init__(self, l=21, sig=2.6, sig_min=0.2, sig_max=4.0, rate_iso=1.0, scaling=3):
         self.l = l
