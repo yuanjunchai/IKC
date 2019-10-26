@@ -7,7 +7,7 @@ About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/mast
 Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
 ### Updates
 [2019-09-22] IKC v0.1 is modified.<br/>
-[2019-09-25] IKC v0.2 is modified. User could use .yaml to change different settings(scale, sig, etc.)
+[2019-09-25] IKC v0.2 is modified. User could use .yaml to change different settings(scale, sigma, etc.)
 
 ### Architecture
 <p align="center">
