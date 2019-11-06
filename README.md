@@ -53,6 +53,7 @@ When test, the operation is the same as above in [`test_SFTMD.py`](codes/test_SF
 However, you need to change dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!<br/>
 Another method is use ['generate_mod_LR_bic.py'].
 ## Getting Started
+### Pretrained model
 You could download the pre-trained models from `./checkpoints` directory.<br/>
 Remember: change opt['path']['pretrain_model_G'] of the .yaml to the models' path you saved.
 
