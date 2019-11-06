@@ -4,7 +4,7 @@
 Here is the implementation of ['Blind Super-Resolution With Iterative Kernel Correction'](https://www.jasongt.com/projectpages/IKC.html).<br/>
 Based on [[BasicSR]](https://github.com/xinntao/BasicSR), [[MMSR]](https://github.com/open-mmlab/mmsr).
 About more details, check [BasicSR](https://github.com/xinntao/BasicSR/tree/master/codes).<br/>
-Thanks to [Jinjin Gu](https://github.com/JasonGUTU) and [Xintao Wang](https://github.com/xinntao/).
+Thanks to [Jinjin Gu](https://scholar.google.com/citations?user=uMQ-G-QAAAAJ&hl=en) and [Xintao Wang](https://scholar.google.com/citations?hl=en&user=FQgZpQoAAAAJ).
 ### Updates
 [2019-09-22] IKC v0.1 is modified.<br/>
 [2019-09-25] IKC v0.2 is modified. User could use .yaml to change different settings(scale, sigma, etc.)
