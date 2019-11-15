@@ -42,7 +42,7 @@ datasets:
 
 #### network structures
 network_G:
-  which_model_G: Corrector #MSRResNet
+  which_model_G: Corrector
   in_nc: 3
   out_nc: 3
   nf: 64
