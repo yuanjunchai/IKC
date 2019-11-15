@@ -13,31 +13,32 @@ step: 7
 #sig: 2.6
 
 datasets:
-#  test_1:  # the 1st test dataset
-#    name: set5
-#    mode: LQGT
-#    dataroot_GT: /mnt/SSD/xtwang/BasicSR_datasets/val_set5/Set5
-#    dataroot_LQ: /mnt/SSD/xtwang/BasicSR_datasets/val_set5/Set5_bicLRx4
-#  test_2:  # the 2st test dataset
-#    name: set14
-#    mode: LQGT
-#    dataroot_GT: /mnt/SSD/xtwang/BasicSR_datasets/val_set14/Set14
-#    dataroot_LQ: /mnt/SSD/xtwang/BasicSR_datasets/val_set14/Set14_bicLRx4
-#  test_3:
-#    name: bsd100
-#    mode: LQGT
-#    dataroot_GT: /mnt/SSD/xtwang/BasicSR_datasets/BSD/BSDS100
-#    dataroot_LQ: /mnt/SSD/xtwang/BasicSR_datasets/BSD/BSDS100_bicLRx4
-#  test_4:
-#    name: urban100
-#    mode: LQGT
-#    dataroot_GT: /mnt/SSD/xtwang/BasicSR_datasets/urban100
-#    dataroot_LQ: /mnt/SSD/xtwang/BasicSR_datasets/urban100_bicLRx4
-  test:
+  test1:
     name: div2k100
     mode: LQGTker
     dataroot_GT: /mnt/yjchai/SR_data/DIV2K_test/HR/x4/
     dataroot_LQ: /mnt/yjchai/SR_data/DIV2K_test/LR/x4/
+#  test_2:
+#    name: set5
+#    mode: LQGTker
+#    dataroot_GT: /mnt/yjchai/SR_data/val_set5/Set5
+#    dataroot_LQ: /mnt/yjchai/SR_data/val_set5/Set5_bicLRx4
+#  test_3:
+#    name: set14
+#    mode: LQGTker
+#    dataroot_GT: /mnt/yjchai/SR_data/val_set14/Set14
+#    dataroot_LQ: /mnt/yjchai/SR_data/val_set14/Set14_bicLRx4
+#  test_4:
+#    name: bsd100
+#    mode: LQGTker
+#    dataroot_GT: /mnt/yjchai/SR_data/BSD/BSDS100
+#    dataroot_LQ: /mnt/yjchai/SR_data/BSD/BSDS100_bicLRx4
+#  test_5:
+#    name: urban100
+#    mode: LQGTker
+#    dataroot_GT: /mnt/yjchai/SR_data/urban100
+#    dataroot_LQ: /mnt/yjchai/SR_data/urban100_bicLRx4
+
 
 
 #### network structures
