@@ -71,6 +71,10 @@ python codes/train_IKC.py -opt_F codes/options/train/train_SFTMD.yml -opt_P code
 ```
 
 ### Test
+0. At first, you'd better run [`codes/scripts/generate_mod_LR_bic.py`](codes/scripts/generate_mod_LR_bic.py) to generate LRblur/LR/HR/Bicubic datasets paths and corresponding kernel map.
+```bash
+python codes/scripts/generate_mod_LR_bic.py
+```
 1. To test SFTMD model, change test datasets paths of [`codes/options/test/test_SFTMD.yml`](codes/options/test/test_SFTMD.yml).
 ```bash
 python codes/test_SFTMD.py -opt_F codes/options/test/test_SFTMD.yml
