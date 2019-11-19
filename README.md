@@ -51,7 +51,7 @@ python codes/scripts/generate_mod_LR_bic.py
 When train, dataset_GT is used to produce actual LR and corresponding kernel in [`train_IKC.py`](codes/train_IKC.py) and [`train_SFTMD.py`](codes/train_SFTMD.py). Therefore, dataset_LQ is not used.<br/>
 When test, the operation is the same as above in [`test_SFTMD.py`](codes/test_SFTMD.py) so as to get kernel maps.<br/>
 However, you need to change dataset_LQ in [`test_IKC.py`](codes/test_IKC.py)!!<br/>
-Another method is use ['generate_mod_LR_bic.py'].
+Another method is use [`generate_mod_LR_bic.py`](codes/scripts/generate_mod_LR_bic.py).
 ## Getting Started
 ### Pretrained model
 You could download the pre-trained models from `./checkpoints` directory.<br/>
