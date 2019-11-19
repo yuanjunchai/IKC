@@ -16,27 +16,22 @@ datasets:
   test1:
     name: div2k100
     mode: LQGTker
-    dataroot_GT: /mnt/yjchai/SR_data/DIV2K_test/HR/x4/
     dataroot_LQ: /mnt/yjchai/SR_data/DIV2K_test/LR/x4/
 #  test_2:
 #    name: set5
 #    mode: LQGTker
-#    dataroot_GT: /mnt/yjchai/SR_data/val_set5/Set5
 #    dataroot_LQ: /mnt/yjchai/SR_data/val_set5/Set5_bicLRx4
 #  test_3:
 #    name: set14
 #    mode: LQGTker
-#    dataroot_GT: /mnt/yjchai/SR_data/val_set14/Set14
 #    dataroot_LQ: /mnt/yjchai/SR_data/val_set14/Set14_bicLRx4
 #  test_4:
 #    name: bsd100
 #    mode: LQGTker
-#    dataroot_GT: /mnt/yjchai/SR_data/BSD/BSDS100
 #    dataroot_LQ: /mnt/yjchai/SR_data/BSD/BSDS100_bicLRx4
 #  test_5:
 #    name: urban100
 #    mode: LQGTker
-#    dataroot_GT: /mnt/yjchai/SR_data/urban100
 #    dataroot_LQ: /mnt/yjchai/SR_data/urban100_bicLRx4
 
 
