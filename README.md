@@ -80,7 +80,7 @@ python codes/scripts/generate_mod_LR_bic.py
 python codes/test_SFTMD.py -opt_F codes/options/test/test_SFTMD.yml
 ```
 
-2. To test Predictor and Corrector models, change datasets paths of [`codes/options/test/test_Predictor.yml`](codes/options/test/test_Predictor.yml) and [`codes/options/test/test_Corrector.yml`](codes/options/test/test_Corrector.yml)
+2. To test Predictor and Corrector models, change datasets paths of [`codes/options/test/test_Predictor.yml`](codes/options/test/test_Predictor.yml) and [`codes/options/test/test_Corrector.yml`](codes/options/test/test_Corrector.yml). The 'dataroot_GT' is only used as PSNR calculation. If you'd like to use it in blind-SR, you could set 'dataroot_GT:~' and just use your own LR data.
 ```bash
 python codes/test_IKC.py -opt_F codes/options/test/test_SFTMD.yml -opt_P codes/options/test/test_Predictor.yml -opt_C codes/options/test/test_Corrector.yml
 ```
